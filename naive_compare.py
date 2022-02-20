@@ -47,11 +47,13 @@ def perform_test_single_sine_wave(num_datapoints):
   print (f'DFT result for {num_datapoints} datapoints. Duration: {duration}')
   fft_results.append(duration)
 
-def power_of_two_list(n):
-  return [1 << i for i in range(n)]
+def power_of_two_list(start, n):
+  list = []
+  for j in range(start, n):
+    list.append(2**j)
+  return list
 
-# datasizes = power_of_two_list(50)
-datasizes = [32, 64, 128, 256, 512, 1024, 2048, 4096, 8]
+datasizes = power_of_two_list(5,15)
 # datasizes = range(100, 1000, 100)
 for datasize in datasizes:
   perform_test_single_sine_wave(datasize)
