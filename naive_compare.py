@@ -3,6 +3,7 @@ import time
 import matplotlib.pyplot as plt
 from naive_discrete_fourier_transform import *
 from discrete_fourier_transform import *
+from cooley_tukey_fourier_transform import *
 
 ########################
 #        TEST 1        #
@@ -10,6 +11,7 @@ from discrete_fourier_transform import *
 
 naive_results = []
 dft_results = []
+fft_results = []
 
 def perform_test_single_sine_wave(num_datapoints):
   # num_datapoints = 1000
@@ -24,12 +26,12 @@ def perform_test_single_sine_wave(num_datapoints):
   x = amplitude * np.sin(2*np.pi*frequency*t)
 
 
-  start = time.time()
-  naive_discrete_fourier_transform(x)
-  end = time.time()
-  duration = end-start
-  print (f'Naive result for {num_datapoints} datapoints. Duration: {duration}')
-  naive_results.append(duration)
+  # start = time.time()
+  # naive_discrete_fourier_transform(x)
+  # end = time.time()
+  # duration = end-start
+  # print (f'Naive result for {num_datapoints} datapoints. Duration: {duration}')
+  # naive_results.append(duration)
 
   start = time.time()
   discrete_fourier_transform(x)
@@ -38,18 +40,37 @@ def perform_test_single_sine_wave(num_datapoints):
   print (f'DFT result for {num_datapoints} datapoints. Duration: {duration}')
   dft_results.append(duration)
 
+  start = time.time()
+  FFT(x)
+  end = time.time()
+  duration = end-start
+  print (f'DFT result for {num_datapoints} datapoints. Duration: {duration}')
+  fft_results.append(duration)
 
-datasizes = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
+def power_of_two_list(n):
+  return [1 << i for i in range(n)]
+
+# datasizes = power_of_two_list(50)
+datasizes = [32, 64, 128, 256, 512, 1024, 2048, 4096, 8]
+# datasizes = range(100, 1000, 100)
 for datasize in datasizes:
   perform_test_single_sine_wave(datasize)
 
-plt.figure(figsize = (12, 6))
-plt.subplot(121)
-plt.stem(datasizes, naive_results)
+plt.figure(figsize = (18, 6))
+plt.tight_layout()
+# plt.subplot(121)
+# plt.stem(datasizes, naive_results)
+# plt.title('For Loop Implementation')
+# plt.xlabel('Number of Samples')
+
+plt.subplot(1, 2, 1)
+plt.stem(datasizes, dft_results)
+plt.title('Dot Product Implementation')
 plt.xlabel('Number of Samples')
 plt.ylabel('Duration in Seconds')
 
-plt.subplot(122)
-plt.stem(datasizes, dft_results)
+plt.subplot(1, 2, 2)
+plt.stem(datasizes, fft_results)
+plt.title('Fast Fourier Transform')
 plt.xlabel('Number of Samples')
 plt.show()

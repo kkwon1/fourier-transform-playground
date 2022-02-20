@@ -16,7 +16,8 @@ An algorithm that computes the DFT of a dataset faster than implementing it dire
 
 ## Comparisons
 
-In this package, I want to try a simple comparison between differnet methods of calculating a FT.
+In this package, I want to try a simple comparison between different methods of calculating a FT.
+I think it would also be interesting to compare FFT implementations in Go and Rust because Go is optimized for parallel computation and Rust is known for its speed.
 
 1. Implemented as a nested for loop across frequencies and number of samples. Should run at O(n^2) where n = number of samples.
 2. Implemented as a matrix multiplication and dot product
